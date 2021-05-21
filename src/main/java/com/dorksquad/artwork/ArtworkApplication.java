@@ -1,6 +1,7 @@
 package com.dorksquad.artwork;
 
-import com.dorksquad.artwork.datastore.IArtworkRepositoryMongo;
+import com.dorksquad.artwork.artwork.Artwork;
+import com.dorksquad.artwork.artwork.IArtworkRepositoryMongo;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -8,7 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ArtworkApplication implements CommandLineRunner {
+public class ArtworkApplication implements CommandLineRunner
+{
 
 	@Autowired
 	private IArtworkRepositoryMongo repository;
@@ -18,7 +20,8 @@ public class ArtworkApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) throws Exception
+	{
 		repository.deleteAll();
 
 		// save a couple of customers
@@ -28,7 +31,8 @@ public class ArtworkApplication implements CommandLineRunner {
 		// fetch all customers
 		System.out.println("Artworks found with findAll():");
 		System.out.println("-------------------------------");
-		for (Artwork artwork : repository.findAll()) {
+		for (Artwork artwork : repository.findAll())
+		{
 			System.out.println(artwork);
 		}
 		System.out.println();

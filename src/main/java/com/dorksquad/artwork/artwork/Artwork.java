@@ -1,9 +1,12 @@
-package com.dorksquad.artwork;
+package com.dorksquad.artwork.artwork;
 
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class Artwork {
+@Document(collection = "artworks")
+public class Artwork
+{
 
     @Id
     private String name;
@@ -18,14 +21,20 @@ public class Artwork {
         this(name, null, image);
     }
 
-    public Artwork(String name, String album, Binary image) {
+    public Artwork(String name, String album, Binary image)
+    {
         this.name = name;
         this.album = album;
         this.image = image;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Artwork{" +
                 "name='" + name + '\'' +
                 ", album='" + album + '\'' +

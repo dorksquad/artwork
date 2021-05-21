@@ -1,10 +1,11 @@
-package com.dorksquad.artwork.datastore;
+package com.dorksquad.artwork.artwork;
 
-import com.dorksquad.artwork.Artwork;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface IArtworkRepositoryMongo extends MongoRepository<Artwork, String> {
 
-    public Artwork findByAlbum(String album);
+    Artwork findByName(String name);
+
+    Artwork findByAlbum(String album);
 
 }
