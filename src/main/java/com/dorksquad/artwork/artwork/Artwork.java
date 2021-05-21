@@ -28,8 +28,19 @@ public class Artwork
         this.image = image;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return this.name;
+    }
+
+    public String getAlbum()
+    {
+        return this.album;
+    }
+
+    public Binary getImage()
+    {
+        return this.image;
     }
 
     @Override

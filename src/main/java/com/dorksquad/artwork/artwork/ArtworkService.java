@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class ArtworkService
@@ -26,6 +27,11 @@ public class ArtworkService
     public Artwork getArtworkByName(String name)
     {
         return artworkRepo.findByName(name);
+    }
+
+    public List<Artwork> getArtworks()
+    {
+        return artworkRepo.findAll();
     }
 
     public Artwork getArtworkByAlbum(String album)
