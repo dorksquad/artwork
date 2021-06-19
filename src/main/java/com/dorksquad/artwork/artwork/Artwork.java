@@ -15,8 +15,6 @@ public class Artwork
 
     private Binary image;
 
-    public Artwork() {}
-
     public Artwork(String name, Binary image) {
         this(name, null, image);
     }
