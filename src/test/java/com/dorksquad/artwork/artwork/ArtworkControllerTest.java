@@ -30,6 +30,28 @@ public class ArtworkControllerTest {
     private IArtworkRepositoryMongo artworkRepositoryMongo;
 
     @Test
+    public void getArtwork_Success() throws Exception {
+
+        Artwork artwork = new Artwork("a1", "a1", new Binary("a1".getBytes()));
+
+        String response =
+            "{" +
+                "\"name\":\"a1\"," +
+                "\"album\":\"a1\"," +
+                "\"image\":{" +
+                    "\"type\":0," +
+                    "\"data\":\"YTE=\"" +
+                "}" +
+            "}";
+
+        when(artworkRepositoryMongo.findByName(artwork.getName())).thenReturn(artwork);
+        this.mockMvc.perform(get("/artwork/" + artwork.getName()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
+    }
+
+    @Test
     public void getArtworks_Success() throws Exception {
         List<Artwork> artworks = new ArrayList<>();
 
