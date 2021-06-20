@@ -15,12 +15,13 @@ public class Artwork
 
     private Binary image;
 
+    public Artwork(){};
+
     public Artwork(String name, Binary image) {
         this(name, null, image);
     }
 
-    public Artwork(String name, String album, Binary image)
-    {
+    public Artwork(String name, String album, Binary image) {
         this.name = name;
         this.album = album;
         this.image = image;
@@ -42,8 +43,7 @@ public class Artwork
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Artwork{" +
                 "name='" + name + '\'' +
                 ", album='" + album + '\'' +
