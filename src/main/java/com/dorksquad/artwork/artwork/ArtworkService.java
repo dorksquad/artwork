@@ -16,12 +16,10 @@ public class ArtworkService
     @Autowired
     private IArtworkRepositoryMongo artworkRepo;
 
-    public Artwork addArtwork(String name, String album, MultipartFile file) throws IOException
-    {
-        Binary binaryFile = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+    public String addArtwork(String name, String album, MultipartFile image) throws IOException {
+        Binary binaryFile = new Binary(BsonBinarySubType.BINARY, image.getBytes());
         Artwork artwork = new Artwork(name, album, binaryFile);
-        artwork = artworkRepo.insert(artwork);
-        return artwork;
+        return artwork.getName();
     }
 
     public Artwork getArtworkByName(String name)
