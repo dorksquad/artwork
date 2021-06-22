@@ -42,11 +42,4 @@ public class Artwork
         return this.image;
     }
 
-    @Override
-    public String toString() {
-        return "Artwork{" +
-                "name='" + name + '\'' +
-                ", album='" + album + '\'' +
-                '}';
-    }
 }
