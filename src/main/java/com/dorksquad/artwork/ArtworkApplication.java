@@ -23,23 +23,6 @@ public class ArtworkApplication implements CommandLineRunner
 
 	@Override
 	public void run(String... args) throws Exception {
-		repository.deleteAll();
 
-		// save a couple of customers
-		repository.save(new Artwork("farm", "what now", new Binary("farm".getBytes())));
-		repository.save(new Artwork("berlin", new Binary("berlin".getBytes())));
-
-		// fetch all customers
-		System.out.println("Artworks found with findAll():");
-		System.out.println("-------------------------------");
-		for (Artwork artwork : repository.findAll()) {
-			System.out.println(artwork);
-		}
-		System.out.println();
-
-		// fetch an individual customer
-		System.out.println("Artwork found with findByAlbum('what now'):");
-		System.out.println("--------------------------------");
-		System.out.println(repository.findByAlbum("what now"));
 	}
 }
