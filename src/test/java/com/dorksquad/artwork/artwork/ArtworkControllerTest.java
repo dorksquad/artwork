@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -74,7 +75,7 @@ public class ArtworkControllerTest {
     }
 
     @Test
-    public void getArtworks_Success() throws Exception {
+    public void getArtworksWithoutSort_Success() throws Exception {
         List<Artwork> artworks = new ArrayList<>();
 
         Artwork a1 = new Artwork("a1", "a1", new Binary("a1".getBytes()));
@@ -107,6 +108,42 @@ public class ArtworkControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().json(response));
+    }
+
+    @Test
+    public void getArtworksWithSort_Success() throws Exception {
+        List<Artwork> artworks = new ArrayList<>();
+
+        Artwork a1 = new Artwork("a", "c", new Binary("a1".getBytes()));
+        artworks.add(a1);
+
+        Artwork a2 = new Artwork("b", "b", new Binary("a2".getBytes()));
+        artworks.add(a2);
+
+        String response = "[" +
+            "{" +
+                "\"name\":\"a\"," +
+                "\"album\":\"c\"," +
+                "\"image\":{" +
+                    "\"type\":0," +
+                    "\"data\":\"YTE=\"" +
+                "}" +
+            "}," +
+            "{" +
+                "\"name\":\"b\"," +
+                "\"album\":\"b\"," +
+                "\"image\":{" +
+                    "\"type\":0," +
+                    "\"data\":\"YTI=\"" +
+                "}" +
+            "}" +
+        "]";
+
+        when(artworkRepositoryMongo.findAll(Sort.by("name").ascending())).thenReturn(artworks);
+        this.mockMvc.perform(get("/artworks").param("sort", "name"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
     }
 
     @Test

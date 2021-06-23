@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -19,8 +20,14 @@ public class ArtworkController {
     private ArtworkService artworkService;
 
     @GetMapping("/artworks")
-    public ResponseEntity<?> getArtworks() {
-        List<Artwork> artworks = artworkService.getArtworks();
+    public ResponseEntity<?> getArtworks(@RequestParam(required = false) String sort) {
+        List<Artwork> artworks = new ArrayList<>();
+        if (sort != null) {
+            artworks = artworkService.getArtworks(sort);
+        } else {
+            artworks = artworkService.getArtworks();
+        }
+
         return ResponseEntity.ok(artworks);
     }
 
