@@ -21,7 +21,7 @@ public class ArtworkController {
 
     @GetMapping("/artworks")
     public ResponseEntity<?> getArtworks(@RequestParam(required = false) String sort) {
-        List<Artwork> artworks = new ArrayList<>();
+        List<Artwork> artworks;
         if (sort != null) {
             artworks = artworkService.getArtworks(sort);
         } else {
