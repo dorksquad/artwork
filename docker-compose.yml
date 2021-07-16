@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  artwork:
+    build: .
+    restart: always
+    container_name: artwork
+    image: artwork
+#    networks:
+#      - main-network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo_db
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo_db
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=mongo_db
+  mongo_db:
+    image: mongo:latest
+    restart: always
+#    networks:
+#      - main-network
+    container_name: mongo_db
+    hostname: mongo_db
+    ports:
+      - "27017:27017"
+    command: [ "--bind_ip", "0.0.0.0" ]
+
+
+#networks:
+#  main-network:
+#    external:
+#      name: artwork-network
