@@ -1,15 +1,17 @@
 package com.dorksquad.artwork.artwork;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class JUnitTestBase {
+/**
+ * This class is for running mongoDb docker container during testing
+ */
+public abstract class JUnitTestBase {
 
 
     protected static MongoDbContainer mongoDbContainer;
@@ -19,7 +21,7 @@ public class JUnitTestBase {
         mongoDbContainer = new MongoDbContainer();
         mongoDbContainer.start();
     }
-    @After
+    @AfterAll
     public static void endContainer()
     {
         mongoDbContainer.stop();

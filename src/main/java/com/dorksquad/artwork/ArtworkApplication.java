@@ -11,7 +11,10 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableAutoConfiguration
 public class ArtworkApplication
 {
-
+	/**
+	 * This is the entry point for spring-boot to create the application
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(ArtworkApplication.class, args);
 	}

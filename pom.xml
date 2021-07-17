@@ -45,6 +45,8 @@
             <artifactId>maven-failsafe-plugin</artifactId>
             <version>3.0.0-M4</version>
         </dependency>
+
+        <!--test container dependencies for creating docker image for mongodb during test phase -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mongodb</artifactId>
@@ -57,18 +59,15 @@
             <version>1.15.3</version>
             <scope>test</scope>
         </dependency>
+
+        <!--Used for NotNull annotation -->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>1.12.3</version>
-            <scope>test</scope>
-        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -76,6 +75,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!-- We'll need the failsafe plugin for IT testing later mapping ports, etc-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -89,12 +90,14 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--Use exec-maven-plugin to create the docker image during install phase of maven -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <executions>
-                    <!-- Remove existing image from local repo -->
+                    <!-- Remove existing dangled images from local repo -->
                     <execution>
                         <id>docker-clean</id>
                         <phase>install</phase>
