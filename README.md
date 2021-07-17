@@ -10,9 +10,9 @@ Intellij is recommended, but any IDE should work
 
 Latest should be good
 
-## Install JDK (11 or higher)
+## Install JDK (16 or higher)
 
-OpenJDK or whatever works best for you. Project is set to Java 11
+OpenJDK or whatever works best for you. Project is set to Java 16
 
 ## Install MongoDB
 
@@ -23,14 +23,24 @@ Useful aliases:
     alias mongostart='sudo systemctl start mongodb'
     alias mongostop='sudo systemctl stop mongodb'
 
+## Install docker
+This process will vary based on your OS, but there are multiple guides
+Make sure your docker daemon is up
+
+Useful aliases:
+
+    alias dockerstart='sudo systemctl start docker.service'
+    alias dockerstop='sudo systemctl stop docker.service'
+
+
+## Install docker-compose
+This process will vary based on your OS, but there are multiple guides
+
+
 ## Building Project
+From the parent directory (artwork) run the following command
+ 1. ```mvn clean install```
 
- 1. Sync maven if needed
- 2. Start mongo
- 3. ```mvn clean install```
-
-## Standing Service Up Continuously
-
- 1. Sync maven if needed
- 2. Start mongo
- 3. ```mvn spring-boot:run```
+## Standing Service Up
+From the parent directory (artwork) run the following command
+ 1. ```docker-compose up```
