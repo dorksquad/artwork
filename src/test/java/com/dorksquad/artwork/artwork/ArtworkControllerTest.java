@@ -2,13 +2,22 @@ package com.dorksquad.artwork.artwork;
 
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.junit.After;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -21,15 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@EnableMongoRepositories(basePackageClasses = IArtworkRepositoryMongo.class)
-@WebMvcTest(ArtworkController.class)
-public class ArtworkControllerTest {
+@SpringBootTest
+@AutoConfigureMockMvc
+@ContextConfiguration(initializers = ArtworkControllerTest.MongoDbInitializer.class)
+public class ArtworkControllerTest extends JUnitTestBase {
 
     @Autowired
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
     @MockBean
-    private IArtworkRepositoryMongo artworkRepositoryMongo;
+    protected IArtworkRepositoryMongo artworkRepositoryMongo;
 
     @Test
     public void getArtworkByName_Success() throws Exception {
