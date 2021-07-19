@@ -21,11 +21,6 @@ public abstract class JUnitTestBase {
         mongoDbContainer = new MongoDbContainer();
         mongoDbContainer.start();
     }
-    @AfterAll
-    public static void endContainer()
-    {
-        mongoDbContainer.stop();
-    }
 
     public static class MongoDbInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
