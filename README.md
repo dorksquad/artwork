@@ -31,6 +31,7 @@ Useful aliases:
 
     alias dockerstart='sudo systemctl start docker.service'
     alias dockerstop='sudo systemctl stop docker.service'
+    alias dockerkill='docker stop $(docker ps -aq) && docker rm $(docker ps -aq)'
 
 
 ## Install docker-compose
@@ -44,3 +45,9 @@ From the parent directory (artwork) run the following command
 ## Standing Service Up
 From the parent directory (artwork) run the following command
  1. ```docker-compose up```
+    if there are issues you can specify --build at the end to force re-build containers
+    
+## Standing up in Debug mode
+From the parent directory (artwork) run the following command
+1. ```docker-compose -f docker-compose-debug.yml up --build```
+
