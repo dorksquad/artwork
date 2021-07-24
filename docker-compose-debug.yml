@@ -5,13 +5,14 @@ services:
     # build tells docker compose to look for a dockerfile within the current working directory
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-debug
     restart: always
     container_name: artwork
     image: artwork
     # expose the container's port 8080 to the host machines port 8080. Format -> (host:container)
     ports:
       - "8080:8080"
+      - "5005:5005"
     depends_on:
       - mongo_db
     # set environment variables to run inside of docker container
@@ -19,6 +20,7 @@ services:
       - SPRING_DATA_MONGODB_HOST=mongo_db
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=mongo_db
+    command: java -agentlib:jdwp=transport=dt_socket,server=y,address=*:5005,suspend=n -jar /opt/app/app.jar
   mongo_db:
     # this pulls the latest mongo image from the online repository unless one is found locally
     image: mongo:latest
