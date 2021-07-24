@@ -1,0 +1,31 @@
+version: "3.8"
+#define services to stand up (here we have artwork service and mongodb)
+services:
+  artwork:
+    # build tells docker compose to look for a dockerfile within the current working directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: artwork
+    image: artwork
+    # expose the container's port 8080 to the host machines port 8080. Format -> (host:container)
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo_db
+    # set environment variables to run inside of docker container
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo_db
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=mongo_db
+  mongo_db:
+    # this pulls the latest mongo image from the online repository unless one is found locally
+    image: mongo:latest
+    restart: always
+    container_name: mongo_db
+    hostname: mongo_db
+    ports:
+      - "27017:27017"
+    # this command tells mongo to bind all ip addresses, so it allows mongo to be open for any IP to contact it (can lead to security risk)
+    command: [ "--bind_ip", "0.0.0.0" ]
