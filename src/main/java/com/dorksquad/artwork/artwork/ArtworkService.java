@@ -19,6 +19,8 @@ public class ArtworkService {
     public String addArtwork(String name, String album, MultipartFile image) throws IOException {
         Binary binaryFile = new Binary(BsonBinarySubType.BINARY, image.getBytes());
         Artwork artwork = new Artwork(name, album, binaryFile);
+        artworkRepo.insert(artwork);
+        
         return artwork.getName();
     }
 
