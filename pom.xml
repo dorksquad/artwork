@@ -173,13 +173,13 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <activatedProperties>prod</activatedProperties>
+                <name>prod</name>
             </properties>
         </profile>
         <profile>
             <id>debug</id>
             <properties>
-                <activatedProperties>debug</activatedProperties>
+                <name>debug</name>
             </properties>
         </profile>
 
