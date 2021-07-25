@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,19 +31,33 @@ public class ArtworkService {
         return artwork.getName();
     }
 
-    public Artwork getArtworkByName(String name) {
-        return artworkRepo.findByName(name);
+    public List<Artwork> getArtwork(String sort,String name, String album){
+
+        if(name == null && album == null){
+            return (sort == null) ? artworkRepo.findAll() : artworkRepo.findAll(Sort.by(sort).ascending());
+        }
+
+
+        List<Artwork> artworks = new ArrayList<>();
+
+        artworks.add( (name != null) ? artworkRepo.findByName(name) : artworkRepo.findByAlbum(album));
+
+        return artworks;
     }
 
-    public List<Artwork> getArtworks() {
-        return artworkRepo.findAll();
-    }
-
-    public List<Artwork> getArtworks(String sort) {
-        return artworkRepo.findAll(Sort.by(sort).ascending());
-    }
-
-    public Artwork getArtworkByAlbum(String album) {
-        return artworkRepo.findByAlbum(album);
-    }
+//    public Artwork getArtworkByName(String name) {
+//        return artworkRepo.findByName(name);
+//    }
+//
+//    public List<Artwork> getArtworks() {
+//        return artworkRepo.findAll();
+//    }
+//
+//    public List<Artwork> getArtworks(String sort) {
+//        return artworkRepo.findAll(Sort.by(sort).ascending());
+//    }
+//
+//    public Artwork getArtworkByAlbum(String album) {
+//        return artworkRepo.findByAlbum(album);
+//    }
 }

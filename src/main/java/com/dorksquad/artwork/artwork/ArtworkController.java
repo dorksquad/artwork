@@ -3,10 +3,7 @@ package com.dorksquad.artwork.artwork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -14,36 +11,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/artworks")
 public class ArtworkController {
 
     @Autowired
     private ArtworkService artworkService;
 
-    @GetMapping("/artworks")
-    public ResponseEntity<?> getArtworks(@RequestParam(required = false) String sort) {
-        List<Artwork> artworks;
-        if (sort != null) {
-            artworks = artworkService.getArtworks(sort);
-        } else {
-            artworks = artworkService.getArtworks();
-        }
-
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> getArtworks(@RequestParam(required = false) String sort,
+                                         @RequestAttribute(name = "name", required = false) String name,
+                                         @RequestAttribute(name = "album", required = false) String album) {
+        List<Artwork> artworks = artworkService.getArtwork(sort, name, album);
         return ResponseEntity.ok(artworks);
     }
 
-    @GetMapping("/artworks/{name}")
-    public ResponseEntity<?> getArtworkByName(@PathVariable String name) {
-        Artwork artwork = artworkService.getArtworkByName(name);
-        return ResponseEntity.ok(artwork);
-    }
 
-    @GetMapping("/artworks/album/{album}")
-    public ResponseEntity<?> getArtworkByAlbum(@PathVariable String album) {
-        Artwork artwork = artworkService.getArtworkByAlbum(album);
-        return ResponseEntity.ok(artwork);
-    }
-
-    @PostMapping("/artworks/add")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
     public ResponseEntity<?> addArtwork(@RequestParam("name") String name,
                                         @RequestParam("album") String album,
                                         @RequestParam("image") MultipartFile image) throws IOException {
