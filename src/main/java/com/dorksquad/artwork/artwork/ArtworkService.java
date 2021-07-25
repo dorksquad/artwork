@@ -31,33 +31,36 @@ public class ArtworkService {
         return artwork.getName();
     }
 
-    public List<Artwork> getArtwork(String sort,String name, String album){
-
+    public List<Artwork> getArtworks(String sort,String name, String album){
         if(name == null && album == null){
+
             return (sort == null) ? artworkRepo.findAll() : artworkRepo.findAll(Sort.by(sort).ascending());
         }
 
-
         List<Artwork> artworks = new ArrayList<>();
-
         artworks.add( (name != null) ? artworkRepo.findByName(name) : artworkRepo.findByAlbum(album));
 
         return artworks;
     }
 
-//    public Artwork getArtworkByName(String name) {
-//        return artworkRepo.findByName(name);
-//    }
-//
-//    public List<Artwork> getArtworks() {
-//        return artworkRepo.findAll();
-//    }
-//
-//    public List<Artwork> getArtworks(String sort) {
-//        return artworkRepo.findAll(Sort.by(sort).ascending());
-//    }
-//
-//    public Artwork getArtworkByAlbum(String album) {
-//        return artworkRepo.findByAlbum(album);
-//    }
+    public String deleteArtwork(String name){
+        if(artworkRepo.findByName(name) == null) return "Artwork with name "+name+" has not been found";
+
+        artworkRepo.deleteById(name);
+        return (artworkRepo.findByName(name) == null) ? "Artwork with name "+name+" has been successfully deleted" :
+                "Artwork with name "+name+" has not been deleted";
+    }
+
+    public Artwork updateArtwork(String name, String album, MultipartFile image) throws IOException{
+        Artwork artwork = artworkRepo.findByName(name);
+
+        if(album != null) artwork.setAlbum(album);
+        if(image != null){
+            Binary binaryFile = new Binary(BsonBinarySubType.BINARY, image.getBytes());
+            artwork.setImage(binaryFile);
+        }
+
+        artworkRepo.save(artwork);
+        return artwork;
+    }
 }

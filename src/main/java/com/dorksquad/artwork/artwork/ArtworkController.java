@@ -20,9 +20,9 @@ public class ArtworkController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getArtworks(@RequestParam(required = false) String sort,
-                                         @RequestAttribute(name = "name", required = false) String name,
-                                         @RequestAttribute(name = "album", required = false) String album) {
-        List<Artwork> artworks = artworkService.getArtwork(sort, name, album);
+                                         @RequestParam(required = false, name = "name") String name,
+                                         @RequestParam(name = "album", required = false) String album) {
+        List<Artwork> artworks = artworkService.getArtworks(sort, name, album);
         return ResponseEntity.ok(artworks);
     }
 
@@ -35,4 +35,23 @@ public class ArtworkController {
         String artwork = artworkService.addArtwork(name, album, image);
         return ResponseEntity.ok(artwork);
     }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<?> deleteArtwork(@RequestParam("name") String name){
+        String result = artworkService.deleteArtwork(name);
+        return ResponseEntity.ok(result);
+    }
+
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<?> updateArtwork(@RequestParam("name") String name,
+                                           @RequestParam(name = "album", required = false) String album,
+                                           @RequestParam(name = "image", required = false) MultipartFile image) throws IOException {
+        Artwork artwork = artworkService.updateArtwork(name, album,image);
+        return ResponseEntity.ok(artwork);
+    }
+
+
 }
