@@ -20,7 +20,7 @@ services:
       - SPRING_DATA_MONGODB_HOST=mongo_db
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=mongo_db
-    command: java -agentlib:jdwp=transport=dt_socket,server=y,address=*:5005,suspend=n -jar /opt/app/app.jar
+    command: java -agentlib:jdwp=transport=dt_socket,server=y,address=*:5005,suspend=n -Dspring.profiles.active=debug -jar /opt/app/app.jar
   mongo_db:
     # this pulls the latest mongo image from the online repository unless one is found locally
     image: mongo:latest
