@@ -24,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,7 +45,7 @@ public class ArtworkControllerTest extends JUnitTestBase {
 
         Artwork artwork = new Artwork("a1", "a1", new Binary("a1".getBytes()));
 
-        String response =
+        String response = "["+
             "{" +
                 "\"name\":\"a1\"," +
                 "\"album\":\"a1\"," +
@@ -54,10 +53,10 @@ public class ArtworkControllerTest extends JUnitTestBase {
                     "\"type\":0," +
                     "\"data\":\"YTE=\"" +
                 "}" +
-            "}";
+            "}" + "]";
 
         when(artworkRepositoryMongo.findByName(artwork.getName())).thenReturn(artwork);
-        this.mockMvc.perform(get("/artworks/" + artwork.getName()))
+        this.mockMvc.perform(get("/artworks" ).param("name","a1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
@@ -68,7 +67,7 @@ public class ArtworkControllerTest extends JUnitTestBase {
 
         Artwork artwork = new Artwork("a1", "a1", new Binary("a1".getBytes()));
 
-        String response =
+        String response = "[" +
             "{" +
                 "\"name\":\"a1\"," +
                 "\"album\":\"a1\"," +
@@ -76,9 +75,9 @@ public class ArtworkControllerTest extends JUnitTestBase {
                     "\"type\":0," +
                     "\"data\":\"YTE=\"" +
                 "}" +
-            "}";
+            "}" +  "]";
         when(artworkRepositoryMongo.findByAlbum(artwork.getAlbum())).thenReturn(artwork);
-        this.mockMvc.perform(get("/artworks/album/" + artwork.getAlbum()))
+        this.mockMvc.perform(get("/artworks").param("album","a1"))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().json(response));
@@ -166,10 +165,55 @@ public class ArtworkControllerTest extends JUnitTestBase {
         Artwork artwork = new Artwork(name, album, binaryFile);
 
         when(artworkRepositoryMongo.insert(artwork)).thenReturn(artwork);
-        this.mockMvc.perform(multipart("/artworks/add").file(image).param("name", name).param("album", album))
+        this.mockMvc.perform(multipart("/artworks").file(image).param("name", name).param("album", album))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().string(name));
     }
+
+    @Test
+    public void deleteArtwork_Success() throws Exception {
+
+        String name = "a1";
+        String album = "tester";
+        MockMultipartFile image = new MockMultipartFile("image", "test.txt", "text/plain", "some image".getBytes());
+
+        Binary binaryFile = new Binary(BsonBinarySubType.BINARY, image.getBytes());
+        Artwork artwork = new Artwork(name, album, binaryFile);
+
+        when(artworkRepositoryMongo.findByName("a1")).thenReturn(artwork).thenReturn(null);
+
+        this.mockMvc.perform(delete("/artworks").param("name","a1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("Artwork with name "+ name +" has been successfully deleted"));
+    }
+
+    @Test
+    public void updateArtwork_Success() throws Exception {
+        String name = "a1";
+        String album = "a2";
+
+        MockMultipartFile image = new MockMultipartFile("image", "test.txt", "text/plain", "some image".getBytes());
+
+        Binary binaryFile = new Binary(BsonBinarySubType.BINARY, image.getBytes());
+        Artwork artwork = new Artwork(name, album, binaryFile);
+
+        String response = "{"
+                + "\"name\":\"" + name + "\","
+                + "\"album\":\"" + album + "\","
+                +"\"image\":" + "{"
+                    + "\"type\":"  + "0" + ","
+                    + "\"data\":" + "\"c29tZSBpbWFnZQ==\"" +
+                "}" +
+                "}";
+
+        when(artworkRepositoryMongo.findByName(name)).thenReturn(artwork);
+        this.mockMvc.perform(put("/artworks").param("name",name).param("album",album).param("image", String.valueOf(binaryFile)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(response));
+    }
+
 
 }

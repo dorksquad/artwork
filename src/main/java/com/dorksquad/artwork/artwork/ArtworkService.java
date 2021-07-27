@@ -46,14 +46,14 @@ public class ArtworkService {
     public String deleteArtwork(String name){
         if(artworkRepo.findByName(name) == null) return "Artwork with name "+name+" has not been found";
 
-        artworkRepo.deleteById(name);
+        artworkRepo.delete(artworkRepo.findByName(name));
         return (artworkRepo.findByName(name) == null) ? "Artwork with name "+name+" has been successfully deleted" :
                 "Artwork with name "+name+" has not been deleted";
     }
 
     public Artwork updateArtwork(String name, String album, MultipartFile image) throws IOException{
         Artwork artwork = artworkRepo.findByName(name);
-
+        System.out.println(name +" "+album);
         if(album != null) artwork.setAlbum(album);
         if(image != null){
             Binary binaryFile = new Binary(BsonBinarySubType.BINARY, image.getBytes());
