@@ -42,4 +42,11 @@ public class Artwork
         return this.image;
     }
 
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public void setImage(Binary image) {
+        this.image = image;
+    }
 }

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,19 +31,36 @@ public class ArtworkService {
         return artwork.getName();
     }
 
-    public Artwork getArtworkByName(String name) {
-        return artworkRepo.findByName(name);
+    public List<Artwork> getArtworks(String sort,String name, String album){
+        if(name == null && album == null){
+
+            return (sort == null) ? artworkRepo.findAll() : artworkRepo.findAll(Sort.by(sort).ascending());
+        }
+
+        List<Artwork> artworks = new ArrayList<>();
+        artworks.add( (name != null) ? artworkRepo.findByName(name) : artworkRepo.findByAlbum(album));
+
+        return artworks;
     }
 
-    public List<Artwork> getArtworks() {
-        return artworkRepo.findAll();
+    public String deleteArtwork(String name){
+        if(artworkRepo.findByName(name) == null) return "Artwork with name "+name+" has not been found";
+
+        artworkRepo.delete(artworkRepo.findByName(name));
+        return (artworkRepo.findByName(name) == null) ? "Artwork with name "+name+" has been successfully deleted" :
+                "Artwork with name "+name+" has not been deleted";
     }
 
-    public List<Artwork> getArtworks(String sort) {
-        return artworkRepo.findAll(Sort.by(sort).ascending());
-    }
+    public Artwork updateArtwork(String name, String album, MultipartFile image) throws IOException{
+        Artwork artwork = artworkRepo.findByName(name);
+        System.out.println(name +" "+album);
+        if(album != null) artwork.setAlbum(album);
+        if(image != null){
+            Binary binaryFile = new Binary(BsonBinarySubType.BINARY, image.getBytes());
+            artwork.setImage(binaryFile);
+        }
 
-    public Artwork getArtworkByAlbum(String album) {
-        return artworkRepo.findByAlbum(album);
+        artworkRepo.save(artwork);
+        return artwork;
     }
 }

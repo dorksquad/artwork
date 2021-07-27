@@ -8,4 +8,5 @@ public interface IArtworkRepositoryMongo extends MongoRepository<Artwork, String
 
     Artwork findByAlbum(String album);
 
+
 }
