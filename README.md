@@ -6,13 +6,13 @@ A service to create and retrieve artworks designed by dork squad using Spring Bo
 
 Intellij is recommended, but any IDE should work
 
-## Install Maven
-
-Latest should be good
-
 ## Install JDK (16 or higher)
 
 OpenJDK or whatever works best for you. Project is set to Java 16
+
+## Install Maven
+
+Latest should be good
 
 ## Install MongoDB
 
@@ -37,17 +37,18 @@ Useful aliases:
 ## Install docker-compose
 This process will vary based on your OS, but there are multiple guides
 
-
 ## Building Project
-From the parent directory (artwork) run the following command
- 1. ```mvn clean install```
 
-## Standing Service Up
+From the parent directory (artwork) run the following command
+ 1. ```mvn clean install``` (uses default maven profile `prod` with INFO log levels)
+ 2. ```mvn clean install -P debug``` (uses maven profile `debug` with DEBUG log levels)
+
+## Standing Service Up (prod profile)
 From the parent directory (artwork) run the following command
  1. ```docker-compose up```
     if there are issues you can specify --build at the end to force re-build containers
     
-## Standing up in Debug mode
+## Standing up in Debug mode (debug profile)
 From the parent directory (artwork) run the following command
 1. ```docker-compose -f docker-compose-debug.yml up --build```
 
